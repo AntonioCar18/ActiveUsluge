@@ -19,9 +19,9 @@ const Hero = () => {
                         <p className="text-white/85 text-[16px] font-semibold max-w-md">Zvučnici, mikrofoni, ledomati i projektori, rezervirajte online u par klikova i mi dostavljamo, postavljamo i pokupimo.</p>
                     </div>
                     <div className="flex items-center justify-start gap-4 mt-4">
-                        <button className="bg-white text-gray-800 px-4 py-3 font-bold cursor-pointer rounded-full border border-white">
+                        <a href="#katalog"className="bg-white text-gray-800 px-4 py-3 font-bold cursor-pointer rounded-full border border-white">
                             Pogledaj katalog
-                        </button>
+                        </a>
                         <button className="bg-white/10 text-white hover:bg-white/20 px-4 py-3 font-bold cursor-pointer rounded-full border border-white">
                             Zatraži ponudu
                         </button>
