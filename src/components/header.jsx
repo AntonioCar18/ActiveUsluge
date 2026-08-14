@@ -3,11 +3,10 @@ import { ShoppingCart } from 'lucide-react'
 const Header = () => {
     return (
         <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100">
-            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-6 py-1 flex items-center justify-between">
                 {/* Logo */}
                 <a href="/" className="flex items-center">
-                    <span className="text-2xl font-bold text-[#2f3f95] tracking-tight">active</span>
-                    <span className="ml-1 px-2.5 py-1 bg-[#74c9f2] text-[#16204f] text-[10px] font-bold tracking-[0.15em] uppercase rounded-sm">usluge</span>
+                    <img src="/logo.png" alt="Active usluge" className="h-15" />
                 </a>
 
                 {/* Meni */}
