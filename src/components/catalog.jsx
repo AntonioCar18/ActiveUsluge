@@ -34,7 +34,7 @@ const Catalog = () => {
                     ))}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 w-full">
-                    <div className="flex flex-col w-full p-4">
+                    <div className="flex flex-col w-full">
                         <div className="bg-blue-200 rounded-t-2xl p-8 flex items-center justify-center">
                             <Speaker className="w-12 h-12 text-white" />
                         </div>
