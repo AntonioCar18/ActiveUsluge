@@ -8,9 +8,9 @@ const Contact = () => {
                         <p className="text-white/85 font-semibold ">Kontaktirajte nas za personaliziranu ponudu, odgovaramo Vam u 24h.</p>
                     </div>
                     <div className="flex items-center justify-start gap-4 mt-4">
-                        <button onClick={() => "tel:+385976791040"} className="bg-white text-gray-800 px-6 py-3 font-bold cursor-pointer rounded-full border border-white">
+                        <a href="tel:+385976791040" className="bg-white text-gray-800 px-6 py-3 font-bold cursor-pointer rounded-full border border-white">
                             Nazovi nas
-                        </button>
+                        </a>
                         <button className="bg-white/10 text-white hover:bg-white/20 px-4 py-3 font-bold cursor-pointer rounded-full border border-white">
                             Pošalji upit
                         </button>
