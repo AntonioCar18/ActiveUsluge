@@ -1,16 +1,22 @@
-# React + Vite
+# Active usluge
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Web aplikacija za iznajmljivanje opreme za partye. Javna stranica omogućuje pregled kataloga opreme (zvučnici, mikrofoni, šatori, rasvjeta, namještaj, dekoracija...) s detaljima i cijenom po danu, dok je administracijsko sučelje predviđeno za upravljanje ponudom i rezervacijama.
 
-Currently, two official plugins are available:
+## Tech stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React + Vite
+- Tailwind CSS
+- [lucide-react](https://lucide.dev/) — ikone
 
-## React Compiler
+## Status
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Trenutno bez backenda i baze podataka — oprema se ručno unosi kao statični podatak u kodu. Baza i admin panel dolaze kad ponuda naraste.
 
-## Expanding the Oxlint configuration
+## Struktura komponenti
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- `Header` — navigacija i logo
+- `Hero` — naslovna sekcija s CTA gumbima
+- `Catalog` — filtriranje po kategorijama i prikaz opreme
+- `ProductInfo` — modal s detaljima i cijenom pojedinog artikla
+
+## Pokretanje lokalno
