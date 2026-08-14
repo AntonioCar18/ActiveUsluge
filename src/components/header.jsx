@@ -22,9 +22,9 @@ const Header = () => {
                         <ShoppingCart className="w-4 h-4" />
                         <span>Košarica (0)</span>
                     </button>
-                    <button onClick={() => "tel:+385976791040"} className="px-6 py-2 bg-[#2f3f95] hover:bg-[#1f2a63] rounded-2xl text-white font-semibold cursor-pointer text-sm transition">
+                    <a href="tel:+385976791040" className="px-6 py-2 bg-[#2f3f95] hover:bg-[#1f2a63] rounded-2xl text-white font-semibold cursor-pointer text-sm transition">
                         Kontaktiraj nas
-                    </button>
+                    </a>
                 </div>
             </div>
         </header>
