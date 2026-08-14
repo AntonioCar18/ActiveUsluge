@@ -16,7 +16,7 @@ const Hero = () => {
                     </div>
                     <div className="flex flex-col gap-6">
                         <h1 className="text-5xl font-extrabold text-white leading-tight">Sva oprema za Vašu proslavu na jednom mjestu</h1>
-                        <p className="text-white/85 text-[16px] font-semibold max-w-md">Šatori, stolovi, rasvjeta, ozvučenje i dekoracije, rezervirajte online u par klikova i mi dostavljamo, postavljamo i pokupimo.</p>
+                        <p className="text-white/85 text-[16px] font-semibold max-w-md">Zvučnici, mikrofoni, ledomati i projektori, rezervirajte online u par klikova i mi dostavljamo, postavljamo i pokupimo.</p>
                     </div>
                     <div className="flex items-center justify-start gap-4 mt-4">
                         <button className="bg-white text-gray-800 px-4 py-3 font-bold cursor-pointer rounded-full border border-white">
