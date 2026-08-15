@@ -47,7 +47,7 @@ const RentRequest = ({ onClose }) => {
     const today = new Date().toISOString().split('T')[0]
 
     return (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-8">
+        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl p-6 max-w-md w-full">
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold">Izvršite rezervaciju</h2>
