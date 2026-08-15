@@ -1,8 +1,13 @@
 import { Dices, Dot, Fan, Speaker, Tv } from "lucide-react";
 import Hero1 from "./subcomponents/hero-1";
 import Hero2 from "./subcomponents/hero-2";
+import RentRequest from "./subcomponents/rentRequest";
+import { useState } from "react";
 
 const Hero = () => {
+
+    const [showRentRequest, setShowRentRequest] = useState(false);
+
     return (
         <div className="w-full bg-linear-to-br from-[#1f2a63] via-[#2f3f95] to-[#74c9f2]">
             <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
@@ -22,7 +27,7 @@ const Hero = () => {
                         <a href="#katalog"className="bg-white text-gray-800 px-4 py-3 font-bold cursor-pointer rounded-full border border-white">
                             Pogledaj katalog
                         </a>
-                        <button className="bg-white/10 text-white hover:bg-white/20 px-4 py-3 font-bold cursor-pointer rounded-full border border-white">
+                        <button onClick={() => setShowRentRequest(true)} className="bg-white/10 text-white hover:bg-white/20 px-4 py-3 font-bold cursor-pointer rounded-full border border-white">
                             Zatraži ponudu
                         </button>
                     </div>
@@ -54,6 +59,9 @@ const Hero = () => {
                     />
                 </div>
             </div>
+            {showRentRequest && (
+                <RentRequest onClose={() => setShowRentRequest(false)}/>
+            )}
         </div>
     );
 }
