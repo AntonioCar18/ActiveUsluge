@@ -89,9 +89,9 @@ const RentRequest = ({ onClose }) => {
                                             </div>
                                             <span className="text-sm font-medium text-slate-700">{item.name}</span>
                                         </div>
-                                        <div className="flex">
-                                            <span className="text-xs text-slate-500">{item.price}</span>
-                                            <span className="text-xs text-slate-500">€/dan</span>
+                                        <div className="flex items-center">
+                                            <span className="text-xs text-slate-500 font-bold">{item.price}€</span>
+                                            <span className="text-xs text-slate-500">/dan</span>
                                         </div>
                                     </label>
                                 );
@@ -166,7 +166,7 @@ const RentRequest = ({ onClose }) => {
 
                 {step === 3 && (
                     <div className="mt-6 flex flex-col items-center justify-center text-center gap-3 py-4">
-                        <div className="flex items-center justify-center w-14 h-14 rounded-full bg-linear-to-br from-[#c39d76] to-[#8B6B47]">
+                        <div className="flex items-center justify-center w-14 h-14 rounded-full bg-green-800">
                             <Check className="w-7 h-7 text-white" />
                         </div>
                         <div className="flex flex-col gap-1">
