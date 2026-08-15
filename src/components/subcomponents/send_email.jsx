@@ -37,7 +37,7 @@ const SendEmail = ({ onClose }) => {
         <div className="fixed bg-black/40 z-50 inset-0 flex justify-center items-center px-4">
             <div className="bg-white p-8 rounded-2xl flex flex-col max-w-md w-full">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold">Pošalji nam upit</h2>
+                    <h2 className="text-2xl font-bold">Pošalji nam upit</h2>
                     <button
                         onClick={onClose}
                         className="cursor-pointer rounded-full p-1"
@@ -45,10 +45,10 @@ const SendEmail = ({ onClose }) => {
                         <X className="w-8 h-8 text-black hover:text-white bg-white hover:bg-blue-300 rounded-full p-2" />
                     </button>
                 </div>
-                <p className="mt-1 text-xs text-slate-500">Ako Vam je potrebno više informacija vezano za našu ponudu, slobodno nam se javite putem niže navedenog kontaktnog obrasca.</p>
+                <p className="mt-1 text-sm text-slate-500">Ako Vam je potrebno više informacija vezano za našu ponudu, slobodno nam se javite putem niže navedenog kontaktnog obrasca.</p>
                 <div className="flex flex-col items-center gap-4">
                     <div className="flex flex-col flex-1 mt-4 w-full">
-                        <label className="text-xs text-slate-500 font-bold">Ime i prezime *</label>
+                        <label className="text-sm text-slate-500 font-bold">Ime i prezime *</label>
                         <input
                             required
                             value={name}
@@ -58,7 +58,7 @@ const SendEmail = ({ onClose }) => {
                         />
                     </div>
                     <div className="flex flex-col flex-1  w-full">
-                        <label className="text-xs text-slate-500 font-bold">Adresa E-pošte *</label>
+                        <label className="text-sm text-slate-500 font-bold">Adresa E-pošte *</label>
                         <input
                             required
                             value={emailAddress}
@@ -69,7 +69,7 @@ const SendEmail = ({ onClose }) => {
                     </div>
                 </div>
                 <div className="flex flex-col flex-1 mt-4">
-                    <label className="text-xs text-slate-500 font-bold">Vaša poruka</label>
+                    <label className="text-sm text-slate-500 font-bold">Vaša poruka</label>
                     <textarea
                         value={note}
                         rows={4}
