@@ -7,8 +7,12 @@ const SendEmail = ({ onClose }) => {
     const [emailAddress, setEmailAddress] = useState("");
     const [note, setNote] = useState("");
     const [status, setStatus] = useState(false);
+    const [statusMissingFields, setStatusMissingFields] = useState(false)
 
     const sendEmail = async (e) => {
+        if(!name || emailAddress || note){
+            setStatusMissingFields(true)
+        }
         try {
             const response = await fetch ("https://formspree.io/f/mjybegay", {
                 method: "POST",
@@ -53,7 +57,7 @@ const SendEmail = ({ onClose }) => {
                             required
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full text-xs border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
+                            className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
                             placeholder="Marko Horvat"
                         />
                     </div>
@@ -63,7 +67,7 @@ const SendEmail = ({ onClose }) => {
                             required
                             value={emailAddress}
                             onChange={(e) => setEmailAddress(e.target.value)}
-                            className="w-full text-xs border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
+                            className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
                             placeholder="marko.horvat@domena.com"
                         />
                     </div>
@@ -74,13 +78,16 @@ const SendEmail = ({ onClose }) => {
                         value={note}
                         rows={4}
                         onChange={(e) => setNote(e.target.value)}
-                        className="w-full text-xs border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100 min-"
+                        className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100 min-"
                         placeholder="Unesite svoju poruku"
                     />
                 </div>
-                <div className="mt-5 flex items-center">
+                <div className="mt-5 flex items-center gap-2">
                     {status === true && (
                         <p className="text-xs text-slate-500">Vaš upit uspješno je poslan, javit ćemo Vam se u najkraćem roku.</p>
+                    )}
+                    {statusMissingFields === true && (
+                        <p className="text-xs text-slate-500">Niste popunili sva polja, molimo Vas da prije slanja popunite sva polja.</p>
                     )}
                     <button
                         onClick={sendEmail}
