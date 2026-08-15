@@ -1,5 +1,7 @@
 import { X, Check } from "lucide-react";
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const RentRequest = ({ onClose }) => {
 
@@ -140,11 +142,12 @@ const RentRequest = ({ onClose }) => {
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm text-slate-500 font-bold">Datum eventa</label>
-                                <input
-                                    type="date"
-                                    min={today}
-                                    value={date}
-                                    onChange={(e) => setDate(e.target.value)}
+                                <DatePicker
+                                    selected={date}
+                                    onChange={(d) => setDate(d)}
+                                    minDate={new Date()}
+                                    dateFormat="dd.MM.yyyy"
+                                    placeholderText="Odaberite datum"
                                     className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
                                 />
                             </div>
