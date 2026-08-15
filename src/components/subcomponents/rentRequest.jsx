@@ -50,7 +50,7 @@ const RentRequest = ({ onClose }) => {
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl p-6 max-w-md w-full">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold">Izvršite rezervaciju</h2>
+                    <h2 className="text-2xl font-bold">Izvršite rezervaciju</h2>
                     <button
                         onClick={onClose}
                         className="cursor-pointer rounded-full p-1"
@@ -61,7 +61,7 @@ const RentRequest = ({ onClose }) => {
 
                 {step === 1 && (
                     <>
-                        <p className="text-xs mt-1 text-slate-500">Odaberite opremu koju želite iznajmiti tako da pritisnete u prazni kvadratić i označite ga kvačicom.</p>
+                        <p className="text-sm mt-1 text-slate-500">Odaberite opremu koju želite iznajmiti tako da pritisnete u prazni kvadratić i označite ga kvačicom.</p>
 
                         <div className="flex flex-col gap-2 mt-4">
                             {equipment.map((item) => {
@@ -104,7 +104,7 @@ const RentRequest = ({ onClose }) => {
                             )}
                             <button
                                 onClick={goToStep2}
-                                className="ml-auto shrink-0 text-xs bg-[#2f3f95] rounded-full px-4 py-3 cursor-pointer font-semibold text-white"
+                                className="ml-auto shrink-0 text-sm bg-[#2f3f95] rounded-full px-4 py-3 cursor-pointer font-semibold text-white"
                             >
                                 Sljedeći korak
                             </button>
@@ -114,11 +114,11 @@ const RentRequest = ({ onClose }) => {
 
                 {step === 2 && (
                     <>
-                        <p className="text-xs mt-1 text-slate-500">Unesite podatke potrebne za rezervaciju.</p>
+                        <p className="text-sm mt-1 text-slate-500">Unesite podatke potrebne za rezervaciju.</p>
 
                         <div className="flex flex-col gap-3 mt-4">
                             <div className="flex flex-col">
-                                <label className="text-xs text-slate-500 font-bold">Ime i prezime</label>
+                                <label className="text-sm text-slate-500 font-bold">Ime i prezime</label>
                                 <input
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -127,7 +127,7 @@ const RentRequest = ({ onClose }) => {
                                 />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-xs text-slate-500 font-bold">Datum eventa</label>
+                                <label className="text-sm text-slate-500 font-bold">Datum eventa</label>
                                 <input
                                     type="date"
                                     min={today}
@@ -137,7 +137,7 @@ const RentRequest = ({ onClose }) => {
                                 />
                             </div>
                             <div className="flex flex-col">
-                                <label className="text-xs text-slate-500 font-bold">Lokacija</label>
+                                <label className="text-sm text-slate-500 font-bold">Lokacija</label>
                                 <input
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
@@ -150,13 +150,13 @@ const RentRequest = ({ onClose }) => {
                         <div className="mt-6 flex items-center justify-between">
                             <button
                                 onClick={() => setStep(1)}
-                                className="text-xs text-slate-500 font-semibold cursor-pointer"
+                                className="text-sm text-slate-500 font-semibold cursor-pointer"
                             >
                                 Natrag
                             </button>
                             <button
                                 onClick={handleSubmit}
-                                className="text-xs bg-[#2f3f95] rounded-full px-4 py-3 cursor-pointer font-semibold text-white"
+                                className="text-sm bg-[#2f3f95] rounded-full px-4 py-3 cursor-pointer font-semibold text-white"
                             >
                                 Pošalji zahtjev
                             </button>
