@@ -1,9 +1,12 @@
 import { X, Check } from "lucide-react";
 import { useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
+import { hr } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
 
 const RentRequest = ({ onClose }) => {
+
+    registerLocale("hr", hr);
 
     const equipment = [
         { id: 1, name: "JBL PartyBox Stage 320 + bežični mikrofoni", price: 50 },
@@ -144,6 +147,7 @@ const RentRequest = ({ onClose }) => {
                                 <label className="text-sm text-slate-500 font-bold">Datum eventa</label>
                                 <DatePicker
                                     selected={date}
+                                    locale="hr"
                                     onChange={(d) => setDate(d)}
                                     minDate={new Date()}
                                     dateFormat="dd.MM.yyyy"
