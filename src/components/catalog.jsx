@@ -1,12 +1,14 @@
 import { Info, Plus, Speaker } from "lucide-react";
 import { useState } from "react";
 import ProductInfo from "./subcomponents/productInfo";
+import RentRequest from "./subcomponents/rentRequest";
 
 const Catalog = () => {
 
     const categories = ["Sve", "Ozvučenje"]
     const [activeCategory, setActiveCategory] = useState("Sve");
     const [showProductInfo, setShowProductInfo] = useState(false);
+    const [showRentRequest, setShowRentRequest] = useState(false);
 
     return (
         <div id="katalog" className="w-full bg-slate-50">
@@ -65,7 +67,14 @@ const Catalog = () => {
                     desc="JBL PartyBox Stage 320 (240W, Bluetooth 5.4, do 18h baterije, IPX4 zaštita od prskanja) u kompletu s 2 bežična mikrofona dometa do 30m i autonomije do 20h — idealno za glazbu, karaoke i najave na proslavi."
                     price={50}
                     onClose={() => setShowProductInfo(false)}
+                    onRequestRent={() => {
+                        setShowProductInfo(false);
+                        setShowRentRequest(true);
+                    }}
                 />
+            )}
+            {showRentRequest && (
+                <RentRequest onClose={() => setShowRentRequest(false)} />
             )}
         </div>
     );

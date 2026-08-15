@@ -1,6 +1,6 @@
 import { X, Sparkles } from "lucide-react";
 
-const ProductInfo = ({ title, desc, price, onClose }) => {
+const ProductInfo = ({ title, desc, price, onClose, onRequestRent }) => {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
             <div
@@ -32,7 +32,7 @@ const ProductInfo = ({ title, desc, price, onClose }) => {
                         </div>
                     </div>
 
-                    <button className="w-full mt-6 py-3 rounded-full bg-[#2f3f95] hover:bg-[#1f2a63] text-white font-semibold cursor-pointer transition">
+                    <button onClick={onRequestRent} className="w-full mt-6 py-3 rounded-full bg-[#2f3f95] hover:bg-[#1f2a63] text-white font-semibold cursor-pointer transition">
                         Zatraži ponudu
                     </button>
                 </div>

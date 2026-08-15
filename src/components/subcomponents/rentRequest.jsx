@@ -13,6 +13,7 @@ const RentRequest = ({ onClose }) => {
 
     const [name, setName] = useState("");
     const [date, setDate] = useState("");
+    const [oib, setOib] = useState("");
     const [location, setLocation] = useState("");
 
     const toggleItem = (id) => {
@@ -38,6 +39,7 @@ const RentRequest = ({ onClose }) => {
             setStep(1);
             setSelected([]);
             setName("");
+            setOib("");
             setDate("");
             setLocation("");
             onClose();
@@ -122,8 +124,18 @@ const RentRequest = ({ onClose }) => {
                                 <input
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="w-full text-xs border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
+                                    className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
                                     placeholder="Marko Horvat"
+                                />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="text-sm text-slate-500 font-bold">OIB</label>
+                                <input
+                                    value={oib}
+                                    type="number"
+                                    onChange={(e) => setOib(e.target.value)}
+                                    className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
+                                    placeholder="XXXXXXXXXXX"
                                 />
                             </div>
                             <div className="flex flex-col">
@@ -133,7 +145,7 @@ const RentRequest = ({ onClose }) => {
                                     min={today}
                                     value={date}
                                     onChange={(e) => setDate(e.target.value)}
-                                    className="w-full text-xs border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
+                                    className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
                                 />
                             </div>
                             <div className="flex flex-col">
@@ -141,7 +153,7 @@ const RentRequest = ({ onClose }) => {
                                 <input
                                     value={location}
                                     onChange={(e) => setLocation(e.target.value)}
-                                    className="w-full text-xs border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
+                                    className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
                                     placeholder="Zagreb, Ilica 1"
                                 />
                             </div>

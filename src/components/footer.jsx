@@ -8,7 +8,7 @@ const Footer = () => {
                 <nav className="gap-4 flex">
                 <a href="#" className="text-gray-600 hover:text-[#2f3f95] transition">Uvjeti najma</a>
                 <a href="#" className="text-gray-600 hover:text-[#2f3f95] transition">Politika privatnosti</a>
-                <a href="#" className="text-gray-600 hover:text-[#2f3f95] transition">Kontakt</a>
+                <a href="#kontakt" className="text-gray-600 hover:text-[#2f3f95] transition">Kontakt</a>
                 </nav>
             </div>
         </footer>
