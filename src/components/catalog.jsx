@@ -1,14 +1,45 @@
-import { Info, Plus, Speaker } from "lucide-react";
-import { useState } from "react";
+import { Info, Speaker, Tent, Lamp } from "lucide-react";
+import { useState, useEffect } from "react";
 import ProductInfo from "./subcomponents/productInfo";
 import RentRequest from "./subcomponents/rentRequest";
 
+const categoryIcons = {
+    "Ozvučenje": Speaker,
+    "Šatori": Tent,
+    "Rasvjeta": Lamp,
+};
+
+const categoryColors = {
+    "Ozvučenje": "bg-[#74c9f2]",
+    "Šatori": "bg-[#2f3f95]",
+    "Rasvjeta": "bg-orange-300",
+};
+
 const Catalog = () => {
 
-    const categories = ["Sve", "Ozvučenje"]
+    const [equipment, setEquipment] = useState({});
     const [activeCategory, setActiveCategory] = useState("Sve");
+    const [selectedEquipment, setSelectedEquipment] = useState(null);
     const [showProductInfo, setShowProductInfo] = useState(false);
     const [showRentRequest, setShowRentRequest] = useState(false);
+
+    const getEquipment = async () => {
+        const response = await fetch("/api/equipment/catalog");
+        if (response.ok) {
+            const data = await response.json();
+            setEquipment(data);
+        }
+    };
+
+    useEffect(() => {
+        getEquipment();
+    }, []);
+
+    const categories = ["Sve", ...(equipment.categories ?? [])];
+
+    const filteredEquipment = activeCategory === "Sve"
+        ? equipment.equipment ?? []
+        : (equipment.equipment ?? []).filter((item) => item.category === activeCategory);
 
     return (
         <div id="katalog" className="w-full bg-slate-50">
@@ -19,7 +50,8 @@ const Catalog = () => {
                         <p className="text-slate-500 text-[15px]">Odaberite kategoriju i pronađite točno ono što Vam treba</p>
                     </div>
                 </div>
-                <div className="flex items-center mt-4 gap-4">
+
+                <div className="flex items-center mt-4 gap-4 flex-wrap">
                     {categories.map((cat) => (
                         <button
                             key={cat}
@@ -35,37 +67,51 @@ const Catalog = () => {
                         </button>
                     ))}
                 </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 w-full">
-                    <div className="flex flex-col w-full">
-                        <div className="bg-blue-200 rounded-t-2xl p-8 flex items-center justify-center">
-                            <Speaker className="w-12 h-12 text-white" />
-                        </div>
-                        <div className="bg-white shadow-md rounded-b-2xl p-5 flex flex-col items-start gap-4">
-                            <div className="px-3 py-1 bg-[#e3eafb] rounded-full">
-                                <p className="font-bold tracking-tight text-xs text-[#2f3f95]">Ozvučenje</p>
-                            </div>
-                            <div className="flex flex-col items-start">
-                                <h3 className="font-bold text-sm">Set JBL Zvučnik + Bežični mikrofoni</h3>
-                                <p className="text-gray-700 text-xs font-extralight">Glasni zvučnici za zabave i druženja</p>
-                            </div>
-                            <div className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-1">
-                                    <strong>50 €</strong>
-                                    <p className="text-slate-500 text-xs">/dan</p>
+                    {filteredEquipment.map((item) => {
+                        const Icon = categoryIcons[item.category] || Speaker;
+                        const iconBg = categoryColors[item.category] || "bg-blue-200";
+                        return (
+                            <div key={item.id} className="flex flex-col w-full h-full">
+                                <div className={`${iconBg} rounded-t-2xl p-8 flex items-center justify-center`}>
+                                    <Icon className="w-12 h-12 text-white" />
                                 </div>
-                                <div onClick={() => setShowProductInfo(true)} className="flex rounded-full bg-blue-300 cursor-pointer">
-                                    <Info className="w-6 h-6 text-white" />
+                                <div className="bg-white shadow-md rounded-b-2xl p-5 flex flex-col items-start gap-4 flex-1">
+                                    <div className="px-3 py-1 bg-[#e3eafb] rounded-full">
+                                        <p className="font-bold tracking-tight text-xs text-[#2f3f95]">{item.category}</p>
+                                    </div>
+                                    <div className="flex flex-col items-start">
+                                        <h3 className="font-bold text-sm">{item.name}</h3>
+                                        <p className="text-gray-700 text-xs font-extralight">{item.description}</p>
+                                    </div>
+                                    <div className="flex items-center justify-between w-full mt-auto">
+                                        <div className="flex items-center gap-1">
+                                            <strong>{item.price} €</strong>
+                                            <p className="text-slate-500 text-xs">/dan</p>
+                                        </div>
+                                        <div
+                                            onClick={() => {
+                                                setSelectedEquipment(item);
+                                                setShowProductInfo(true);
+                                            }}
+                                            className="flex rounded-full bg-blue-300 cursor-pointer"
+                                        >
+                                            <Info className="w-6 h-6 text-white" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        );
+                    })}
                 </div>
             </div>
-            {showProductInfo && (
+
+            {showProductInfo && selectedEquipment && (
                 <ProductInfo
-                    title="Set JBL Zvučnik + Bežični mikrofoni"
-                    desc="JBL PartyBox Stage 320 (240W, Bluetooth 5.4, do 18h baterije, IPX4 zaštita od prskanja) u kompletu s 2 bežična mikrofona dometa do 30m i autonomije do 20h — idealno za glazbu, karaoke i najave na proslavi."
-                    price={50}
+                    title={selectedEquipment.name}
+                    desc={selectedEquipment.description}
+                    price={selectedEquipment.price}
                     onClose={() => setShowProductInfo(false)}
                     onRequestRent={() => {
                         setShowProductInfo(false);
@@ -80,4 +126,4 @@ const Catalog = () => {
     );
 }
 
-export default Catalog;
+export default Catalog; 

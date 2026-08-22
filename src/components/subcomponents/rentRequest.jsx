@@ -1,5 +1,5 @@
 import { X, Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import { hr } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,18 +8,76 @@ const RentRequest = ({ onClose }) => {
 
     registerLocale("hr", hr);
 
-    const equipment = [
-        { id: 1, name: "JBL PartyBox Stage 320 + bežični mikrofoni", price: 50 },
-    ];
+    const [equipmentList, setEquipmentList] = useState([]);
+    const [blockedDates, setBlockedDates] = useState([]);
+    const [equipmentBlocks, setEquipmentBlocks] = useState([]);
 
     const [step, setStep] = useState(1);
     const [selected, setSelected] = useState([]);
     const [warning, setWarning] = useState(false);
 
     const [name, setName] = useState("");
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(null);
     const [oib, setOib] = useState("");
     const [location, setLocation] = useState("");
+    const [dateError, setDateError] = useState("");
+    const [submitError, setSubmitError] = useState("");
+
+    const getEquipmentList = async () => {
+        const response = await fetch("/api/equipment/catalog");
+        if (response.ok) {
+            const data = await response.json();
+            setEquipmentList(data.equipment ?? []);
+        }
+    };
+
+    const getBlockedDates = async () => {
+        const response = await fetch("/api/public/blocked-dates");
+        if (response.ok) {
+            const data = await response.json();
+            setBlockedDates(data.data ?? []);
+        }
+    };
+
+    const getEquipmentBlocksForSelected = async () => {
+        const results = await Promise.all(
+            selected.map((id) =>
+                fetch(`/api/public/blocked-equipment?equipment_id=${id}`).then((res) =>
+                    res.ok ? res.json() : { data: [] }
+                )
+            )
+        );
+        const merged = results.flatMap((r) => r.data ?? []);
+        setEquipmentBlocks(merged);
+    };
+
+    const toDateString = (d) => {
+        if (!d) return "";
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        return `${yyyy}-${mm}-${dd}`;
+    };
+
+    const isDateBlocked = (d) => {
+        const dateStr = toDateString(d);
+        if (!dateStr) return false;
+        const globallyBlocked = blockedDates.some((b) => b.date === dateStr);
+        const equipmentBlocked = equipmentBlocks.some(
+            (b) => dateStr >= b.start_date && dateStr <= b.end_date
+        );
+        return globallyBlocked || equipmentBlocked;
+    };
+
+    const getMinDate = () => {
+        const d = new Date();
+        d.setDate(d.getDate() + 2);
+        return d;
+    };
+
+    const totalPrice = equipmentList
+        .filter((e) => selected.includes(e.id))
+        .reduce((sum, e) => sum + Number(e.price), 0);
 
     const toggleItem = (id) => {
         setSelected((prev) =>
@@ -27,7 +85,7 @@ const RentRequest = ({ onClose }) => {
         );
     };
 
-    const goToStep2 = () => {
+    const goToStep2 = async () => {
         if (selected.length === 0) {
             setWarning(true);
             setTimeout(() => {
@@ -35,23 +93,70 @@ const RentRequest = ({ onClose }) => {
             }, 3000);
             return;
         }
+        await getEquipmentBlocksForSelected();
         setStep(2);
     };
 
-    const handleSubmit = () => {
-        setStep(3);
-        setTimeout(() => {
-            setStep(1);
-            setSelected([]);
-            setName("");
-            setOib("");
-            setDate("");
-            setLocation("");
-            onClose();
-        }, 3000);
+    const handleDateChange = (d) => {
+        setDate(d);
+        if (isDateBlocked(d)) {
+            setDateError("Ovaj datum je zauzet za odabranu opremu ili cijeli dan. Odaberite drugi datum.");
+        } else {
+            setDateError("");
+        }
     };
 
-    const today = new Date().toISOString().split('T')[0]
+    const handleSubmit = async () => {
+        if (isDateBlocked(date)) {
+            setDateError("Ovaj datum je zauzet za odabranu opremu ili cijeli dan. Odaberite drugi datum.");
+            return;
+        }
+
+        const equipmentNames = equipmentList
+            .filter((e) => selected.includes(e.id))
+            .map((e) => e.name)
+            .join(", ");
+
+        try {
+            const response = await fetch("/api/public/reservations", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    client_name: name,
+                    oib: oib,
+                    equipment: equipmentNames,
+                    equipment_ids: selected,
+                    event_date: toDateString(date),
+                    location: location,
+                }),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                setSubmitError(data.detail ?? "Slanje zahtjeva nije uspjelo.");
+                return;
+            }
+
+            setSubmitError("");
+            setStep(3);
+            setTimeout(() => {
+                setStep(1);
+                setSelected([]);
+                setName("");
+                setOib("");
+                setDate(null);
+                setLocation("");
+                onClose();
+            }, 3000);
+        } catch (err) {
+            setSubmitError("Slanje zahtjeva nije uspjelo. Pokušajte ponovno.");
+        }
+    };
+
+    useEffect(() => {
+        getEquipmentList();
+        getBlockedDates();
+    }, []);
 
     return (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
@@ -71,17 +176,23 @@ const RentRequest = ({ onClose }) => {
                         <p className="text-sm mt-1 text-slate-500">Odaberite opremu koju želite iznajmiti tako da pritisnete u prazni kvadratić i označite ga kvačicom.</p>
 
                         <div className="flex flex-col gap-2 mt-4">
-                            {equipment.map((item) => {
+                            {equipmentList.map((item) => {
                                 const isChecked = selected.includes(item.id);
+                                const isUnavailable = item.real_available <= 0;
                                 return (
                                     <label
                                         key={item.id}
-                                        className="flex items-center justify-between gap-3 border border-slate-200 rounded-xl px-4 py-3 cursor-pointer hover:border-[#74c9f2] transition"
+                                        className={`flex items-center justify-between gap-3 border rounded-xl px-4 py-3 transition ${
+                                            isUnavailable
+                                                ? "border-slate-100 opacity-40 cursor-not-allowed"
+                                                : "border-slate-200 cursor-pointer hover:border-[#74c9f2]"
+                                        }`}
                                     >
                                         <div className="flex items-center gap-3">
                                             <input
                                                 type="checkbox"
                                                 checked={isChecked}
+                                                disabled={isUnavailable}
                                                 onChange={() => toggleItem(item.id)}
                                                 className="hidden"
                                             />
@@ -94,7 +205,9 @@ const RentRequest = ({ onClose }) => {
                                             >
                                                 {isChecked && <Check className="w-3.5 h-3.5 text-white" />}
                                             </div>
-                                            <span className="text-sm font-medium text-slate-700">{item.name}</span>
+                                            <span className="text-sm font-medium text-slate-700">
+                                                {item.name}{isUnavailable ? " (nedostupno)" : ""}
+                                            </span>
                                         </div>
                                         <div className="flex items-center">
                                             <span className="text-xs text-slate-500 font-bold">{item.price}€</span>
@@ -148,12 +261,13 @@ const RentRequest = ({ onClose }) => {
                                 <DatePicker
                                     selected={date}
                                     locale="hr"
-                                    onChange={(d) => setDate(d)}
-                                    minDate={new Date()}
+                                    onChange={handleDateChange}
+                                    minDate={getMinDate()}
                                     dateFormat="dd.MM.yyyy"
                                     placeholderText="Odaberite datum"
                                     className="w-full text-sm border border-slate-200 rounded-2xl px-4 py-2 mt-2 focus:outline-none focus:ring-2 focus:ring-slate-100"
                                 />
+                                {dateError && <p className="text-xs text-rose-500 mt-1">{dateError}</p>}
                             </div>
                             <div className="flex flex-col">
                                 <label className="text-sm text-slate-500 font-bold">Lokacija</label>
@@ -166,6 +280,13 @@ const RentRequest = ({ onClose }) => {
                             </div>
                         </div>
 
+                        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
+                            <span className="text-sm text-slate-500">Ukupna cijena (bez poštarine)</span>
+                            <span className="text-sm font-bold text-[#2f3f95]">{totalPrice}€</span>
+                        </div>
+
+                        {submitError && <p className="text-xs text-rose-500 mt-3">{submitError}</p>}
+
                         <div className="mt-6 flex items-center justify-between">
                             <button
                                 onClick={() => setStep(1)}
@@ -175,7 +296,8 @@ const RentRequest = ({ onClose }) => {
                             </button>
                             <button
                                 onClick={handleSubmit}
-                                className="text-sm bg-[#2f3f95] rounded-full px-4 py-3 cursor-pointer font-semibold text-white"
+                                disabled={!name || !oib || !date || !location || !!dateError}
+                                className="text-sm bg-[#2f3f95] rounded-full px-4 py-3 cursor-pointer font-semibold text-white disabled:opacity-40 disabled:cursor-not-allowed"
                             >
                                 Pošalji zahtjev
                             </button>
